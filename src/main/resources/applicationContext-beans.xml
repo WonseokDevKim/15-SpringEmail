@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+	<bean id="memberService" class="com.feb.jdbc.service.MemberService">
+		<constructor-arg ref="memberDao" />
+		<!-- name="MemberService 내 변수명(타겟 변수명)" ref="타겟 변수에 해당하는 클래스" -->
+		<property name="emailUtil" ref="emailUtil" />
+	</bean>
+	
+	<bean id="memberDao" class="com.feb.jdbc.dao.impl.MemberDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="noticeService" class="com.feb.jdbc.service.NoticeService">
+		<constructor-arg ref="noticeDao" />
+	</bean>
+	
+	<bean id="noticeDao" class="com.feb.jdbc.dao.impl.NoticeDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="loginService" class="com.feb.jdbc.service.LoginService">
+		<constructor-arg ref="loginDao" />
+	</bean>
+	
+	<bean id="loginDao" class="com.feb.jdbc.dao.impl.LoginDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- EmailUtil emailUtil = new EmailUtil(mailSender);과 유사 스프링이 xml 읽어서 자바로 바꿈(단, 싱글톤으로 만듬) -->
+	<bean id="emailUtil" class="com.feb.jdbc.util.EmailUtil">
+		<constructor-arg ref="mailSender" />
+	</bean>
+	
+	  <!-- 이메일 전송하기 위한 bean설정 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.naver.com" />
+		<property name="port" value="587" />
+		<property name="username" value="yourmail" />
+		<property name="password" value="yourpasswd" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+
+</beans>
